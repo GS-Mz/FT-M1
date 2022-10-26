@@ -24,6 +24,15 @@ function DecimalABinario(num) {
   return binary
 }
 
+function DecimalABinario2(num) {
+  let binaryResult = "";
+  while (num > 2){
+    num = Math.floor(num / 2);
+    binaryResult + num % 2;
+  }
+  return binaryResult
+}
+
 
 module.exports = {
   BinarioADecimal,
