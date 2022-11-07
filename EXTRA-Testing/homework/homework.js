@@ -1,4 +1,4 @@
-const bus = require("@11ty/eleventy/src/EventBus");
+// const bus = require("@11ty/eleventy/src/EventBus");
 
 const layout = [
     [{type: 'VIP', booked: false}, {type: 'VIP', booked: true}, {type: 'VIP', booked: true}, {type: 'VIP', booked: false}],
@@ -12,7 +12,7 @@ function checkSeatStatus(a, b) {
    if (typeof a !== "string"){
     throw new TypeError("First parameter is not a string");
    }
-   if (typeof b !== "number"){
+   else if (typeof b !== "number"){
     throw new TypeError("Second parameter is not a number");
    }
 }
@@ -25,7 +25,30 @@ function getRowNumber(letter){
     }
 }
 
+function getSeatStatus(fila, columna){
+    checkSeatStatus(fila, columna)
+    fila = getRowNumber(fila);
+       return layout[fila][columna].booked;
+}
 
-module.exports = 
+function book(fila, columna){
+    let status = getSeatStatus(fila, columna);
+    filaNumero = getRowNumber(fila);
+    if (status === true){
+        return `Seat in ${fila}${columna} is already booked`;
+    }else if (status === false){
+        layout[filaNumero][columna]["booked"] = true;
+        if (layout[filaNumero][columna]["booked"] === true){
+            return `Seat in ${fila}${columna} successfully booked`;
+        }
+       
+    }
+    
+}
+
+
+module.exports = {
+    getRowNumber, 
     checkSeatStatus,
-    getRowNumber;
+    getSeatStatus,
+    book};
