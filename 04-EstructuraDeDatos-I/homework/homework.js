@@ -15,9 +15,22 @@ Como ejercicio adicional y completamente opcional, al terminar de resolver este 
 */
 
 function nFactorial(n) {
+  if (n === 0 || n === 1) return 1
+  if ( n < 0 ) return "No existen factoriales negativos"
+
+  return n * nFactorial(n-1)
 }
 
-function nFibonacci(n) {
+function nFibonacci(n, arr=[], tot=0, num=1) {
+  if (n === 0) return 0
+  if (n < 0 ) return "No se admiten negativos";
+  arr.push(tot);
+  if (arr.length - 1 === n) return arr[n];
+  arr.push(num);
+  if (arr.length -1 === n) return arr[n];
+  tot += num;
+  num += tot;
+  return nFibonacci(n, arr, tot, num);
 }
 
 /*
@@ -29,8 +42,19 @@ Implementar la clase Queue, sabiendo que es una estructura de tipo FIFO, donde e
 Pueden utilizar class o función constructora.
 */
 
-function Queue() {
-
+class Queue{
+  constructor(){
+    this.queque = []
+  }
+  enqueue(elemento){
+    this.queque.push(elemento)
+  }
+  dequeue(){
+    return this.queque.shift();
+  }
+  size(){
+    return this.queque.length;
+  }
 }
 
 // No modifiquen nada debajo de esta linea
