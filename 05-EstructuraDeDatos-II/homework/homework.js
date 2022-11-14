@@ -68,7 +68,7 @@ LinkedList.prototype.search = function(input){
     if (current.value == input) return current.value;
     else if (typeof input == "function"){
       if (input(current.value)){
-        return `${current.value}`;
+        return current.value;
       }
     }
     current = current.next;
@@ -93,7 +93,59 @@ La clase debe tener los siguientes métodos:
 Ejemplo: supongamos que quiero guardar {instructora: 'Ani'} en la tabla. Primero puedo chequear, con hasKey, si ya hay algo en la tabla con el nombre 'instructora'; luego, invocando set('instructora', 'Ani'), se almacenará el par clave-valor en un bucket específico (determinado al hashear la clave)
 */
 
-function HashTable() {}
+function HashTable() {
+  this.slots = new Array(35)
+  this.numBuckets = this.slots.length;
+}
+
+HashTable.prototype.hash = function(input){
+  let hash = 0;
+  for (let i = 0; i < input.length; i++) {
+    hash = hash + input.charCodeAt(i)
+  }
+  hash = hash % 35;
+  return hash;
+}
+
+HashTable.prototype.set = function(clave, valor){
+  if (typeof(clave) != "string") throw new TypeError ("Keys must be strings")
+  let hash = this.hash(clave);
+  if (!this.slots[hash]){
+    this.slots[hash] = new Object();
+    this.slots[hash][clave] = valor;
+    return this.slots[hash][clave]
+  }else{
+    this.slots[hash][clave] = valor;
+    return this.slots[hash][clave]
+  }
+}
+
+HashTable.prototype.get = function (clave) {
+  let valor = ""
+    this.slots.forEach(element => {
+        if(element.hasOwnProperty(clave)){
+          valor = element[clave];
+        }
+    });
+    return valor;
+}
+
+HashTable.prototype.hasKey = function (valor) {
+  let resultado = false;
+  this.slots.forEach(element => {
+    for (let i in element){
+      if (i == valor){
+        resultado = true;
+      }
+    }
+  })
+  return resultado;
+}
+
+
+const hashTable = new HashTable;
+hashTable.set("Apellido", "Mendoza");
+console.log(hashTable.get("Apellido"))
 
 // No modifiquen nada debajo de esta linea
 // --------------------------------
